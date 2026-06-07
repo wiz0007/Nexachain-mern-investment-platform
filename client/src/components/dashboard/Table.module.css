@@ -1,0 +1,34 @@
+.responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.responsive table,
+table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.responsive th,
+.responsive td,
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.responsive th,
+th {
+  color: #475569;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.responsive td,
+td {
+  color: #0f172a;
+  font-size: 14px;
+}
