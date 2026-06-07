@@ -12,18 +12,24 @@ export const authMiddleware = (
   const authHeader =
     req.headers.authorization;
 
-  if (
-    !authHeader ||
-    !authHeader.startsWith("Bearer ")
-  ) {
+  const bearerToken =
+    authHeader?.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : undefined;
+
+  const cookieToken =
+    req.cookies?.accessToken;
+
+  const token =
+    bearerToken ||
+    cookieToken;
+
+  if (!token) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized",
     });
   }
-
-  const token =
-    authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(

@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   loginUser,
+  logoutUser,
   registerUser,
 } from "../controllers/auth.controller";
 
@@ -26,6 +27,11 @@ router.post(
   loginValidator,
   validateRequest,
   loginUser
+);
+
+router.post(
+  "/logout",
+  logoutUser
 );
 
 export default router;

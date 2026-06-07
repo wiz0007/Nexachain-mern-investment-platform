@@ -11,6 +11,10 @@ import { ApiResponse } from "../utils/ApiResponse";
 import { generateToken } from "../utils/jwt";
 
 import { generateReferralCode } from "../utils/generateReferralCode";
+import {
+  clearAuthCookie,
+  setAuthCookie,
+} from "../utils/authCookie";
 
 export const registerUser = async (
   req: Request,
@@ -74,6 +78,11 @@ export const registerUser = async (
     user._id.toString()
   );
 
+  setAuthCookie(
+    res,
+    token
+  );
+
   const {
     password: _password,
     ...responseUser
@@ -85,7 +94,6 @@ export const registerUser = async (
       "Registration successful",
       {
         user: responseUser,
-        token,
       }
     )
   );
@@ -142,6 +150,11 @@ export const loginUser = async (
     user._id.toString()
   );
 
+  setAuthCookie(
+    res,
+    token
+  );
+
   const {
     password: _password,
     ...responseUser
@@ -153,8 +166,22 @@ export const loginUser = async (
       "Login successful",
       {
         user: responseUser,
-        token,
       }
+    )
+  );
+};
+
+export const logoutUser = (
+  _req: Request,
+  res: Response
+) => {
+  clearAuthCookie(res);
+
+  return res.json(
+    new ApiResponse(
+      true,
+      "Logout successful",
+      null
     )
   );
 };

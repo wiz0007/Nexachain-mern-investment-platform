@@ -47,6 +47,7 @@ Create `server/.env` from `server/.env.example`.
 
 ```env
 PORT=5000
+CLIENT_URL=http://localhost:5173
 MONGO_URI=mongodb://127.0.0.1:27017/nexachain_assessment
 JWT_SECRET=replace_with_a_long_random_secret
 JWT_EXPIRES_IN=7d
@@ -78,7 +79,9 @@ If `VITE_API_URL` is not set, the app defaults to `http://localhost:5000/api`.
 
 ## API Documentation
 
-All private routes require:
+Browser authentication uses an HTTP-only `accessToken` cookie set by register/login. Axios is configured with `withCredentials: true`, so the browser sends the cookie automatically.
+
+For Postman/manual testing, private routes also accept:
 
 ```http
 Authorization: Bearer <jwt_token>
@@ -113,10 +116,12 @@ Response:
   "message": "Registration successful",
   "data": {
     "user": {},
-    "token": "jwt_token"
+    "user": {}
   }
 }
 ```
+
+The response also sets an HTTP-only `accessToken` cookie.
 
 #### Login
 
@@ -133,6 +138,14 @@ Request:
   "password": "secret123"
 }
 ```
+
+#### Logout
+
+```http
+POST /api/auth/logout
+```
+
+Clears the HTTP-only auth cookie.
 
 ### Investments
 
@@ -237,7 +250,7 @@ The scheduler is registered when the backend starts.
 - Referral income is based on daily ROI amount.
 - Only active parent users receive level income.
 - Level percentages are `10%`, `5%`, and `2%` for levels 1, 2, and 3.
-- The dashboard expects an existing JWT token in browser `localStorage` under the key `token`.
+- The dashboard expects the browser to have the HTTP-only `accessToken` cookie created by register/login.
 
 ## Verification Commands
 
